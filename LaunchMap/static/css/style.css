@@ -1,0 +1,17 @@
+#tooltip {
+	display: none;
+	position: absolute;
+	z-index: 100;
+	background-color: white;
+	transform: translate(0,-100%);
+	border: 1px solid black;
+}
+
+#tooltip #close {
+	text-align: right;
+}
+
+#tooltip table {
+	font-size: 10px;
+}
+

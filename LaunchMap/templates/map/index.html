@@ -1,0 +1,82 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<meta charset="utf-8">
+		<link rel="stylesheet" href="{% static './css/style.css' %}">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css">
+		
+		<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js"></script>
+		<script type="text/javascript" src="https://files.worldwind.arc.nasa.gov/artifactory/web/0.9.0/worldwind.min.js"></script>
+		<script type="text/javascript" src="{% static './js/worldwind.js' %}"></script>
+		<script type="text/javascript">
+
+		function showTooltip(data, x, y) {
+			var tooltip = $('#tooltip');
+			// ツールチップの表示
+			tooltip.css('display', 'inline');
+			// 表示位置
+			tooltip.css('left', x + 5 + 'px');
+			tooltip.css('top', y - 5 + 'px');
+			// データの表示
+			$('#facillityName').text(data.name);
+			$('#location').text(data.lat + ", " + data.lon);
+			$('#launchSchedule').html('<a href="">Launch Schedule</a>');
+		}
+		
+		function closeTooltip(){
+			var tooltip = $('#tooltip');
+			// ツールチップの表示
+			tooltip.css('display', 'none');
+		}
+
+		$(document).ready(function(){ 
+			var wwd = new NasaWorldWind('canvasOne');
+			wwd.addEventListener('pinclick', function(obj, data, x, y){
+				wwd.showPoint(data.lat, data.lon);
+				console.log('data: ' + data.name + ' x=' + x + " y=" + y);
+				showTooltip(data, x, y);
+			});
+
+			const imageUri = WorldWind.configuration.baseUrl + "images/pushpins/plain-red.png";
+
+			const data = [
+				{'id': 'id1', 'lat': 28.524058, 'lon': -80.65085,  'name':'Cape Canaveral Air Force Station', 'image': imageUri},
+				{'id': 'id2', 'lat': 29.563056, 'lon': -95.091111, 'name': 'Lyndon B. Johnson Space Center',  'image': imageUri},
+				{'id': 'id3', 'lat': 30.4     , 'lon': 130.97,     'name': 'Tanegashima Space Center',        'image': imageUri},
+				{'id': 'id4', 'lat': 31.25115,  'lon': 131.076125, 'name': 'Uchinoura Space Center',          'image': imageUri},
+			];
+
+			wwd.addPins(data);
+			wwd.draw();
+			
+			$('#close').click(function(){
+				closeTooltip();
+			});
+		});
+
+		</script>
+	</head>
+	<body>
+		<canvas id="canvasOne" width="768" height="576">
+			Your browser does not support HTML5 Canvas.
+		</canvas>
+		
+		<div id="tooltip">
+			<div id="close">×</div>
+			<table border=1>
+				<tr>
+					<td>Launching Facility Name</td><td id="facillityName">&nbsp;</td>
+				</tr>
+				<tr>
+					<td>Location</td><td id="location">&nbsp;</td>
+				</tr>
+				<tr>
+					<td colspan=2 id="launchSchedule">Launch Schedule</td>
+				</tr>
+			</table>
+		</div>
+	</body>
+</html>
