@@ -85,7 +85,6 @@ class NasaWorldWind{
 						const pickObj = pickList.objects[i];
 						if(!pickObj.isTrrain) {
 							const id = pickObj.userObject.id;
-							// �s�b�N�̃s���ƃ��x��
 							console.log('pickObj.userObject=' + id);
 							const pickData = datas.get(id);
 							console.log("data Object:" + pickData.data);
