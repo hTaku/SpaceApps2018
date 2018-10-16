@@ -17,19 +17,38 @@
 			var tooltip = $('#tooltip');
 			// ツールチップの表示
 			tooltip.css('display', 'inline');
+			// スケジュールサマリ非表示
+			$('#scheduleSummary').css('display', 'none');
+
 			// 表示位置
 			tooltip.css('left', x + 5 + 'px');
 			tooltip.css('top', y - 5 + 'px');
 			// データの表示
 			$('#facillityName').text(data.name);
 			$('#location').text(data.lat + ", " + data.lon);
-			$('#launchSchedule').html('<a href="">Launch Schedule</a>');
+			$('#launchSchedule').html('<a id="showSchedule" href="javascript:void(0);">Launch Schedule</a>');
 		}
 		
 		function closeTooltip(){
 			var tooltip = $('#tooltip');
 			// ツールチップの表示
 			tooltip.css('display', 'none');
+		}
+
+		function summarySchedule(rootNode, mission){
+			rootNode.append('' + 
+					'<table id="' + mission.id + '" class="entity" border=1>' + 
+					'<tr>' + 
+					'	<td rowspan=3><img src="' + mission.image + '" style="width:100px;height:100px;"></td>' + 
+					'	<td>mission</td><td id="missionName">' + mission.name + '</td>' + 
+					'</tr>' + 
+					'<tr>' + 
+					'	<td>Date</td><td id="launchDate">' + mission.date + '</td>' + 
+					'</tr>' + 
+					'<tr>' + 
+					'	<td>Launch Window</td><td id="launchWindow">' + mission.window + '</td>' + 
+					'</tr>' + 
+					'</table>');
 		}
 
 		$(document).ready(function(){ 
@@ -55,6 +74,20 @@
 			$('#close').click(function(){
 				closeTooltip();
 			});
+			
+			// tooltip内のスケジュールリンクをクリック
+			$(document).on('click', '#showSchedule', function(event) {
+				$('#facility').css('display', 'none');
+				let scheduleSummary = $('#scheduleSummary');
+				var datas = [
+					{'id': 1, 'name': 'ICON (Ionospheric Connection Explorer)', 'image': 'https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/iconairglownight.png', 'date': 'October 26, 2018', 'window': '4:00 a.m. -- 5:30 a.m. Eastern'},
+					{'id': 2, 'name': 'Northrop Grumman Resupply Mission to Space Station (CRS-10)', 'image': 'https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/iss053e311637_0.jpg', 'date': 'November 15', 'window': '2018 - 4:49 a.m. Eastern'},
+				];
+				datas.forEach(function(data){
+					summarySchedule(scheduleSummary, data);
+				});
+				scheduleSummary.css('display', 'inline');
+			});
 		});
 
 		</script>
@@ -66,7 +99,7 @@
 		
 		<div id="tooltip">
 			<div id="close">×</div>
-			<table border=1>
+			<table id="facility" border=1>
 				<tr>
 					<td>Launching Facility Name</td><td id="facillityName">&nbsp;</td>
 				</tr>
@@ -74,9 +107,11 @@
 					<td>Location</td><td id="location">&nbsp;</td>
 				</tr>
 				<tr>
-					<td colspan=2 id="launchSchedule">Launch Schedule</td>
+					<td id="launchSchedule" colspan=2>&nbsp;</td>
 				</tr>
 			</table>
+			<div id="scheduleSummary">
+			</div>
 		</div>
 	</body>
 </html>
