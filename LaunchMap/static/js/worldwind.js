@@ -7,7 +7,7 @@ class NasaWorldWind{
 			{layer: new WorldWind.BMNGLandsatLayer(),            enabled: true},
 //			{layer: new WorldWind.CompassLayer(),                enabled: true},
 			{layer: new WorldWind.CoordinatesDisplayLayer(this.wwd), enabled: true},
-			{layer: new WorldWind.ViewControlsLayer(this.wwd),       enabled: true},
+//			{layer: new WorldWind.ViewControlsLayer(this.wwd),       enabled: true},
 		];
 
 		this.layers.forEach(function(layer){
@@ -35,7 +35,7 @@ class NasaWorldWind{
 
 		placemarkAttributes.imageSource = image;
 
-		const position = new WorldWind.Position(lat, lon, 100);
+		const position = new WorldWind.Position(lat, lon, 1);
 		const placemark = new WorldWind.Placemark(position, false, placemarkAttributes);
 /*
 		placemark.label = name + "\n" +

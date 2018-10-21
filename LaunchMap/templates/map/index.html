@@ -35,23 +35,35 @@
 			tooltip.css('display', 'none');
 		}
 
-		function summarySchedule(rootNode, mission){
+		function appendSummarySchedule(rootNode, mission){
 			rootNode.append('' + 
-					'<table id="' + mission.id + '" class="entity" border=1>' + 
+					'<table id="' + mission.id + '" class="mission" border=1>' + 
 					'<tr>' + 
-					'	<td rowspan=3><img src="' + mission.image + '" style="width:100px;height:100px;"></td>' + 
-					'	<td>mission</td><td id="missionName">' + mission.name + '</td>' + 
+					'	<td rowspan=3 class="image"><img src="' + mission.image + '"></td>' + 
+					'	<th>mission</th><td id="missionName">' + mission.name + '</td>' + 
 					'</tr>' + 
 					'<tr>' + 
-					'	<td>Date</td><td id="launchDate">' + mission.date + '</td>' + 
+					'	<th>Date</th><td id="launchDate">' + mission.date + '</td>' + 
 					'</tr>' + 
 					'<tr>' + 
-					'	<td>Launch Window</td><td id="launchWindow">' + mission.window + '</td>' + 
+					'	<th>Launch Window</th><td id="launchWindow">' + mission.window + '</td>' + 
 					'</tr>' + 
 					'</table>');
 		}
+		
+		function showSidebar(sidebarId, datas){
+			let sidebar = $(sidebarId);
+			datas.forEach(function(data){
+				appendSummarySchedule($('#missionList'), data);
+			});
+			sidebar.animate({'marginLeft':'0px'});
+		}
+		
+		function hiddenSidebar(sidebarId){
+			$(sidebarId).animate({'marginLeft': '-400px;'});
+		}
 
-		$(document).ready(function(){ 
+		$(document).ready(function() {
 			var wwd = new NasaWorldWind('canvasOne');
 			wwd.addEventListener('pinclick', function(obj, data, x, y){
 				wwd.showPoint(data.lat, data.lon);
@@ -71,34 +83,53 @@
 			wwd.addPins(data);
 			wwd.draw();
 			
-			$('#close').click(function(){
+			$('#tooltip .close').click(function(){
 				closeTooltip();
 			});
 			
 			// tooltip内のスケジュールリンクをクリック
 			$(document).on('click', '#showSchedule', function(event) {
-				$('#facility').css('display', 'none');
-				let scheduleSummary = $('#scheduleSummary');
 				var datas = [
 					{'id': 1, 'name': 'ICON (Ionospheric Connection Explorer)', 'image': 'https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/iconairglownight.png', 'date': 'October 26, 2018', 'window': '4:00 a.m. -- 5:30 a.m. Eastern'},
 					{'id': 2, 'name': 'Northrop Grumman Resupply Mission to Space Station (CRS-10)', 'image': 'https://www.nasa.gov/sites/default/files/styles/image_card_4x3_ratio/public/thumbnails/image/iss053e311637_0.jpg', 'date': 'November 15', 'window': '2018 - 4:49 a.m. Eastern'},
 				];
-				datas.forEach(function(data){
-					summarySchedule(scheduleSummary, data);
-				});
-				scheduleSummary.css('display', 'inline');
+				
+				showSidebar('#sidebar', datas);
+			});
+			
+			// sidebar内のmissionテーブルをクリック
+			$(document).on('click', '.mission', function(event){
+// 				alert(event.currentTarget.id);
+				const missionId = event.currentTarget.id;
+				$('#sidebar #missionList').animate({'marginLeft': '-400px}'});
+				// TODO Ajax
+				const data = {'id': 1, };
+				
+			});
+			
+			$(document).on('click', '#sidebar #control .close', function(event){
+				hiddenSidebar('#sidebar');
 			});
 		});
 
 		</script>
 	</head>
 	<body>
+		<div id="sidebar">
+			<div id="control">
+				<div class="back">←</div><div class="close">×</div>
+				<br>
+			</div>
+			<div id="missionList">
+			</div>
+		</div>
 		<canvas id="canvasOne" width="768" height="576">
 			Your browser does not support HTML5 Canvas.
 		</canvas>
 		
 		<div id="tooltip">
-			<div id="close">×</div>
+			<div class="close">×</div>
+			<br>
 			<table id="facility" border=1>
 				<tr>
 					<td>Launching Facility Name</td><td id="facillityName">&nbsp;</td>

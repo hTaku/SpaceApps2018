@@ -1,3 +1,10 @@
+#canvasOne {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 1;
+}
+
 #tooltip {
 	display: none;
 	position: absolute;
@@ -5,13 +12,75 @@
 	background-color: white;
 	transform: translate(0,-100%);
 	border: 1px solid black;
+	padding: 0px;
 }
 
-#tooltip #close {
+#tooltip .close{
+	padding: 0px;
+	margin: 0px;
+}
+
+#tooltip #facility{
+	font-size: 10px;
+	background-color: white;
+}
+
+#sidebar {
+	position: absolute;
+	width: 400px;
+	height: 100%;
+	margin-left: -400px;
+	border: solid 1px black;
+	z-index: 10;
+	background: white;
+}
+
+#sidebar #control .back{
+	width: 199px;
+	text-align: left;
+	float: left;
+}
+
+#sidebar #control .close{
+	width: 199px;
 	text-align: right;
 }
 
-#tooltip table {
-	font-size: 10px;
+#sidebar #control{
+	overflow: hidden;
 }
 
+#sidebar #control:before,
+#sidebar #control:after{
+	content: "";
+	display: table;
+}
+
+#sidebar #control:after{
+	clear: both;
+}
+
+#sidebar #missionList .mission{
+	width: 400px;
+}
+
+#sidebar #missionList .mission .image{
+	width: 100px;
+	padding: 0px;
+	text-align: center;
+}
+
+#sidebar #missionList .mission .image img{
+	width: 100px;
+	height: 100px;
+}
+
+#sidebar #missionList .mission th{
+	width: 100px;
+	text-align: center;
+}
+
+#sidebar #missionList .mission td{
+	width: 200px;
+	text-align: left;
+}
