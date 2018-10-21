@@ -34,7 +34,9 @@ class Weather(models.Model):
     station = models.ForeignKey(Station, on_delete=models.CASCADE)
     days = models.IntegerField(default=16)
     dt = models.IntegerField(default=0)
-    weather = models.ForeignKey(WeatherMaster, on_delete=models.CASCADE)
-    wind = models.IntegerField(default=0)
+    weathermaster = models.ForeignKey(WeatherMaster, on_delete=models.CASCADE)
+    wind_speed = models.IntegerField(default=0)
+    wind_degree = models.FloatField(default=0.0)
+    cloud = models.IntegerField(default=0)
 
 
