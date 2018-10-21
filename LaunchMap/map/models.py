@@ -10,6 +10,7 @@ class Station(models.Model):
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
     city_id = models.IntegerField(default=0)
     name = models.CharField(max_length=120)
+    name_alias = models.CharField(max_length=60, default='')
     name_jp = models.CharField(max_length=120)
     latitude = models.FloatField()
     longitude = models.FloatField()
@@ -34,5 +35,6 @@ class Weather(models.Model):
     days = models.IntegerField(default=16)
     dt = models.IntegerField(default=0)
     weather = models.ForeignKey(WeatherMaster, on_delete=models.CASCADE)
+    wind = models.IntegerField(default=0)
 
 
